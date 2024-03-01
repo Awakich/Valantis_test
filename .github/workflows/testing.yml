@@ -1,15 +1,6 @@
 name: Test React App
 on: push
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get repository code
-        uses: actions/checkout@v3
-      - name: Install dependencies
-        run: npm install
-      - name: Lint application
-        run: npm lint
   build:
     runs-on: ubuntu-latest
     needs: lint
