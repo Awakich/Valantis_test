@@ -14,3 +14,7 @@ export type goodsDescription = {
     price: number
     product: string
 }
+
+export type pagination = {
+    index: number
+}

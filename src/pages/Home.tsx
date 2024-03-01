@@ -1,54 +1,33 @@
-import Loading from '@/components/Loading'
-import { useIDS } from '@/features/hooks/useIDS'
-import { useItems } from '@/features/hooks/useItems'
-import { goodsDescription } from '@/types/types'
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination'
 import { FC, Suspense } from 'react'
-import { Button } from "@/components/ui/button"
-import {
-    Card,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Link } from 'react-router-dom'
+import Loading from '@/components/Loading'
+import ItemsList from '@/widget/ItemsList'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { paginationSelector, pickNumber } from '@/features/slices/paginationSlice'
+import { paginationList } from '@/features/consts'
+import Filter from '@/entities/Filter'
 
 const Home: FC = () => {
-    const ids: string[] = useIDS()
-    const items: goodsDescription[] = useItems(ids)
-
-    const filteredItems = items.filter((item, index, self) => {
-        return index === self.findIndex((i) => i.id === item.id);
-    });
-
-    if (!ids) return <Loading />
+    const pickedNumber = useAppSelector(paginationSelector)
+    const dispatch = useAppDispatch()
 
     return (
         <section className='flex flex-col'>
             <h2 className='font-semibold text-2xl'>Товары</h2>
             <Suspense fallback={<Loading />}>
-                <div className='grid grid-cols-3 items-center justify-center gap-8'>
-                    {filteredItems && filteredItems.map(({ brand, id, price, product }) => (
-                        <Card key={id} className='shadow h-full'>
-                            <CardHeader className='flex flex-row justify-between'>
-                                <div className='flex flex-col gap-4'>
-                                    <CardTitle>{product}</CardTitle>
-                                    <CardDescription>{`Бренд ${brand ? brand : 'не найден'}`}</CardDescription>
-                                </div>
+                <Filter />
 
-                                <p className='text-xl font-bold'>{price}₽</p>
+                <ItemsList />
 
-                            </CardHeader>
-                            <CardFooter>
-                                <Button variant={"default"}>
-                                    <Link to={`/${id}`}>
-                                        Купить сейчас
-                                    </Link>
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
+                <Pagination>
+                    <PaginationContent>
+                        {paginationList.map(({ id, value }, index) => (
+                            <PaginationItem>
+                                <PaginationLink isActive={index === pickedNumber} onClick={() => dispatch(pickNumber(id))}>{value}</PaginationLink>
+                            </PaginationItem>
+                        ))}
+                    </PaginationContent>
+                </Pagination>
             </Suspense>
         </section>
     )
