@@ -2,23 +2,23 @@ name: Test React App
 on: push
 jobs:
   lint:
-     runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
-      -name: Get repository code
-      uses: actions/checkout@v3
-      -name: Install dependecies
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Install dependencies
         run: pnpm install
-      -name: Lint application
+      - name: Lint application
         run: pnpm lint
   build:
     runs-on: ubuntu-latest
     needs: lint
     steps:
-      -name: Get repository code
-      uses: actions/checkout@v3
-      -name: Install dependecies
-      run: pnpm install
-      -name: Lint application
-      run: pnpm build
-      -name: Deploy
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build application
+        run: pnpm build
+      - name: Deploy
         run: echo Deploying...
