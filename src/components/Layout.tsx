@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 const Layout: FC<layout> = ({ children }) => {
     return (
-        <section>
+        <section className='p-20'>
             {children}
         </section>
     )

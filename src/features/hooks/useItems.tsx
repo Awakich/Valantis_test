@@ -6,29 +6,32 @@ import axios from "axios"
 export const useItems = (ids: string[]) => {
     const [items, setItems] = useState<goods>({ result: [] })
 
-    const requestData = {
-        "action": "get_items",
-        "params": { "ids": ids }
-    }
+    useEffect(() => {
+        const requestData = {
+            "action": "get_items",
+            "params": { "ids": ids }
+        }
 
-    const config = {
-        headers: {
-            'X-Auth': authString,
-        },
-    };
+        const config = {
+            headers: {
+                'X-Auth': authString,
+            },
+        };
 
-    try {
-        useEffect(() => {
-            const getGoods = async () => {
-                const response = await axios.post('https://api.valantis.store:41000/', requestData, config);
+        const getGoods = async () => {
+            try {
+                const response = await axios.post('https://api.valantis.store:41000/', requestData, config)
                 setItems(response.data)
+            } catch (error) {
+                console.log(error)
             }
+        }
 
+        if (ids.length > 0) {
             getGoods()
-        }, [])
-    } catch (error: any) {
-        console.log(error)
-    }
+        }
+
+    }, [ids])
 
     return items.result;
 }
