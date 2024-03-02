@@ -3,13 +3,14 @@ import { authString } from "../consts";
 import axios from 'axios'
 
 
-export const useIDS = () => {
+export const useIDS = (offset: number, action: string | 'filter' | 'get_ids', price: number) => {
     const [goods, setGoods] = useState<{ result: string[] }>({ result: [] })
 
     const requestData = {
-        "action": "get_ids",
-        "params": { "limit": 50, "offset": 0 }
+        "action": action,
+        "params": action === "get_ids" ? { "limit": 50, "offset": offset } : { 'price': price }
     }
+
 
     const config = {
         headers: {

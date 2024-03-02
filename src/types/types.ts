@@ -17,4 +17,10 @@ export type goodsDescription = {
 
 export type pagination = {
     index: number
+    offset: number
+}
+
+export type filter = {
+    productInput: string
+    productPrice: number
 }
