@@ -12,9 +12,7 @@ const ItemsList: FC = () => {
     const pickedNumber = useAppSelector(paginationSelector)
     const { productPrice: price, productInput } = useAppSelector(filterSelector)
 
-    const action = !!price ? 'get_ids' : 'filter'
-
-    const ids: string[] = useIDS(pickedNumber.offset, action, price)
+    const ids: string[] = useIDS(pickedNumber.offset)
     const items: goodsDescription[] = useItems(ids)
 
     const uniqItems = items.filter((item, index, self) => {
@@ -27,6 +25,7 @@ const ItemsList: FC = () => {
         <div className='grid grid-cols-3 items-center justify-center gap-8'>
             {uniqItems && uniqItems.
                 filter((item) => item.product.toLowerCase().includes(productInput.toLowerCase()) ? item : '').
+                filter((item) => item.price.toString().includes(price.toString())).
                 map(({ brand, id, price, product }) => (
                     <Item brand={brand} id={id} price={price} product={product} />
                 ))}
